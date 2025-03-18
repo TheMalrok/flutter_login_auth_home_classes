@@ -94,8 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 
 void _goToHomeScreen(BuildContext context) {
-  Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
+  Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const HomeScreen()));
 }
 
 void _goToRegisterScreen(BuildContext context) {
