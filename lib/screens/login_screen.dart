@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/secound_screen.dart';
+import 'package:flutter_application_1/screens/home_screen.dart';
+import 'package:flutter_application_1/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.title});
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () => _goToSecondScreen(context),
+            onPressed: () => _goToHomeScreen(context),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
               shape: RoundedRectangleBorder(
@@ -79,7 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const Text("Don't have an account?"),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _goToRegisterScreen(context);
+                },
                 child: const Text('Register Now'),
               ),
             ],
@@ -90,7 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-void _goToSecondScreen(BuildContext context) {
+void _goToHomeScreen(BuildContext context) {
   Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
+}
+
+void _goToRegisterScreen(BuildContext context) {
+  Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => const RegisterScreen()));
 }
