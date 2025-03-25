@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_application_1/screens/register_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, required this.title});
-  final String title;
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -93,9 +93,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-void _goToHomeScreen(BuildContext context) {
-  Navigator.of(context)
-      .pushReplacement(MaterialPageRoute(builder: (context) => HomeScreen()));
+void _goToHomeScreen(BuildContext context) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  await prefs.setBool('logged', true).then((value) {
+    if (value) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const HomeScreen()));
+      print(prefs.getBool('logged'));
+    }
+  });
 }
 
 void _goToRegisterScreen(BuildContext context) {
