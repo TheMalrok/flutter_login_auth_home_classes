@@ -15,7 +15,20 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.settings))
         ],
       ),
-      body: Center(child: Text('Home Screen')),
+      body: Column(
+        children: [
+          Card(
+            child: ListTile(
+              title: Text('Pawel Baraniak'),
+              subtitle: Text('Nauczyciel programowania aplikacji mobilnych'),
+              leading: CircleAvatar(
+                child: Icon(Icons.account_circle_outlined),
+              ),
+              trailing: Icon(Icons.arrow_forward_ios),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
