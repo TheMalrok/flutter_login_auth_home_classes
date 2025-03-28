@@ -8,6 +8,7 @@ class RegisterScreen extends StatelessWidget {
     return Scaffold(
         body: Center(
       child: Column(
+        spacing: 20,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
@@ -17,7 +18,7 @@ class RegisterScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
@@ -30,7 +31,6 @@ class RegisterScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
@@ -43,7 +43,6 @@ class RegisterScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
@@ -57,7 +56,6 @@ class RegisterScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: TextField(

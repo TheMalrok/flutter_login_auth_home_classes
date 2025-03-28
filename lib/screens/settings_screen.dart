@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
 
+import 'package:like_button/like_button.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -12,11 +14,17 @@ class SettingsScreen extends StatelessWidget {
         title: const Text('Settings Screen'),
       ),
       body: Center(
-        child: TextButton(
-          onPressed: () {
-            _logout(context);
-          },
-          child: const Text('Logout'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                _logout(context);
+              },
+              child: const Text('Logout'),
+            ),
+            LikeButton(),
+          ],
         ),
       ),
     );

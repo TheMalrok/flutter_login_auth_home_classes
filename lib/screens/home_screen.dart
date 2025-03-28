@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/settings_screen.dart';
+import 'package:flutter_application_1/person_list.dart';
+import 'package:flutter_application_1/widgets/item_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,19 +22,11 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.settings))
         ],
       ),
-      body: Column(
-        children: [
-          Card(
-            child: ListTile(
-              title: Text('Pawel Baraniak'),
-              subtitle: Text('Nauczyciel programowania aplikacji mobilnych'),
-              leading: CircleAvatar(
-                child: Icon(Icons.account_circle_outlined),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
-            ),
-          )
-        ],
+      body: ListView.builder(
+        itemCount: personList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Item(person: personList[index]);
+        },
       ),
     );
   }
