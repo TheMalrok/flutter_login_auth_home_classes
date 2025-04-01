@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/classes/person.dart';
+import 'package:flutter_application_1/screens/person_screen.dart';
 
 class Item extends StatelessWidget {
   final Person person;
@@ -11,14 +12,20 @@ class Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        leading: CircleAvatar(
-            child: Icon(person.isTeacher
-                ? Icons.account_balance
-                : Icons.person_3_rounded)),
-        title: Text('${person.name} ${person.surname}'),
-        subtitle: Text(person.description ?? ''),
-        trailing: Icon(Icons.arrow_forward_ios),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => PersonScreen(person: person)));
+        },
+        child: ListTile(
+          leading: CircleAvatar(
+              child: Icon(person.isTeacher
+                  ? Icons.account_balance
+                  : Icons.person_3_rounded)),
+          title: Text('${person.name} ${person.surname}'),
+          subtitle: Text(person.description ?? ''),
+          trailing: Icon(Icons.arrow_forward_ios),
+        ),
       ),
     );
   }

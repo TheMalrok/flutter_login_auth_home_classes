@@ -22,11 +22,19 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.settings))
         ],
       ),
-      body: ListView.builder(
-        itemCount: personList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Item(person: personList[index]);
+      body: RefreshIndicator(
+        onRefresh: () {
+          setState(() {
+            personList.shuffle();
+          });
+          return Future.value(true);
         },
+        child: ListView.builder(
+          itemCount: personList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Item(person: personList[index]);
+          },
+        ),
       ),
     );
   }

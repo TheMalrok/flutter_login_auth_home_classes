@@ -27,5 +27,22 @@ List<Person> personList = [
     isTeacher: false,
     surname: "Polak",
     description: "Dziadziu dzk",
-  )
+  ),
+  Person(
+      name: "Tomek",
+      surname: "Gziut",
+      isTeacher: false,
+      age: 18,
+      description: "kurdelek felek"),
+  Person(
+      name: "Laura",
+      surname: "Strycharczuk",
+      isTeacher: false,
+      description: "nie wiem",
+      age: 44),
+  Person(
+      name: "Patryk",
+      isTeacher: true,
+      surname: "Grzyb",
+      description: "charyzmatyczny, piękny, skromy")
 ];
