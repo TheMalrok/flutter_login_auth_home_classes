@@ -22,18 +22,25 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.settings))
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () {
-          setState(() {
-            personList.shuffle();
-          });
-          return Future.value(true);
-        },
-        child: ListView.builder(
-          itemCount: personList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Item(person: personList[index]);
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+          const Color.fromARGB(255, 166, 0, 255),
+          const Color.fromARGB(255, 26, 0, 50),
+        ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        child: RefreshIndicator(
+          onRefresh: () {
+            setState(() {
+              personList.shuffle();
+            });
+            return Future.value(true);
           },
+          child: ListView.builder(
+            itemCount: personList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Item(person: personList[index]);
+            },
+          ),
         ),
       ),
     );

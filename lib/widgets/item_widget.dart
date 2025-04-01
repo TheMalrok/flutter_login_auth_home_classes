@@ -18,10 +18,12 @@ class Item extends StatelessWidget {
               builder: (context) => PersonScreen(person: person)));
         },
         child: ListTile(
-          leading: CircleAvatar(
-              child: Icon(person.isTeacher
-                  ? Icons.account_balance
-                  : Icons.person_3_rounded)),
+          leading: Hero(
+            tag: "person_icon_${person.name}_${person.surname}",
+            child: CircleAvatar(
+                child: Icon(
+                    person.isTeacher ? Icons.book : Icons.person_3_rounded)),
+          ),
           title: Text('${person.name} ${person.surname}'),
           subtitle: Text(person.description ?? ''),
           trailing: Icon(Icons.arrow_forward_ios),
