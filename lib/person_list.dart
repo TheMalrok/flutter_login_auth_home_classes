@@ -18,11 +18,6 @@ List<Person> personList = [
     surname: 'Płudowska',
   ),
   Person(
-    name: 'Adam',
-    isTeacher: false,
-    surname: 'Nowak',
-  ),
-  Person(
       name: "Tomek",
       surname: "Gziut",
       isTeacher: false,
@@ -45,7 +40,11 @@ List<Person> personList = [
       surname: "Szlapa",
       description: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
   Person(
-      name: "Antoni", isTeacher: false, surname: "Smaga", description: "COS"),
+    name: "Antoni",
+    isTeacher: false,
+    surname: "Smaga",
+    description: "COS",
+  ),
   Person(
       name: "Mikolaj",
       isTeacher: true,
