@@ -42,7 +42,7 @@ class AppThemes {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      color: const Color.fromARGB(255, 199, 199, 199),
+      color: Colors.white,
       shadowColor: Colors.black.withOpacity(0.1),
     ),
 

@@ -40,8 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: personList.length,
             itemBuilder: (BuildContext context, int index) {
               return Dismissible(
-                  key: Key(index.toString()),
-                  child: Item(person: personList[index]));
+                key: Key(index.toString()),
+                child: Item(
+                  person: personList[index],
+                ),
+              );
             },
           ),
         ),
@@ -49,7 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: const Color.fromARGB(255, 158, 98, 201),
-        onPressed: () => showAddPersonSheet(context),
+        onPressed: () =>
+            showAddPersonSheet(context).whenComplete(() => setState(() {})),
         child: const Icon(Icons.add),
       ),
     );
@@ -58,83 +62,120 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> showAddPersonSheet(BuildContext context) {
     TextEditingController nameController = TextEditingController();
     TextEditingController surnameController = TextEditingController();
-    TextEditingController isTeacherController = TextEditingController();
     TextEditingController ageController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
+    String? isTeacher;
+
     return showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (BuildContext context) {
-        return Container(
-          color: Colors.white,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                spacing: 12,
-                children: <Widget>[
-                  TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      hintText: 'Name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  TextField(
-                    controller: surnameController,
-                    decoration: InputDecoration(
-                      hintText: 'Surname',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  TextField(
-                    controller: isTeacherController,
-                    decoration: InputDecoration(
-                      hintText: 'isTeacher',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  TextField(
-                    controller: ageController,
-                    decoration: InputDecoration(
-                      hintText: 'Age',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  TextField(
-                    controller: descriptionController,
-                    decoration: InputDecoration(
-                      hintText: 'Description',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    child: const Text('Add Person'),
-                    onPressed: () => setState(() {
-                      _addPerson(
-                        name: nameController.text,
-                        surname: surnameController.text,
-                        isTeacher: isTeacherController.text,
-                        age: ageController.text,
-                        description: descriptionController.text,
-                      );
-                    }),
-                  ),
-                ],
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 20,
               ),
-            ),
-          ),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        hintText: 'Name',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    TextField(
+                      controller: surnameController,
+                      decoration: InputDecoration(
+                        hintText: 'Surname',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RadioListTile<String>(
+                            title: const Text('Teacher'),
+                            value: 'isTeacher',
+                            groupValue: isTeacher,
+                            onChanged: (String? value) {
+                              setState(() {
+                                isTeacher = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: RadioListTile<String>(
+                            title: const Text('Student'),
+                            value: 'isStudent',
+                            groupValue: isTeacher,
+                            onChanged: (String? value) {
+                              setState(() {
+                                isTeacher = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 12),
+                    TextField(
+                      controller: ageController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: 'Age',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: InputDecoration(
+                        hintText: 'Description',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      child: const Text('Add Person'),
+                      onPressed: () {
+                        setState(() {
+                          _addPerson(
+                            name: nameController.text,
+                            surname: surnameController.text,
+                            isTeacher: isTeacher,
+                            age: ageController.text,
+                            description: descriptionController.text,
+                          );
+                          Navigator.pop(context);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );
@@ -149,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
     personList.add(Person(
       name: name ?? "",
       surname: surname ?? "",
-      isTeacher: isTeacher == "true",
+      isTeacher: isTeacher == isTeacher ? true : false,
       age: int.tryParse(age ?? ""),
       description: description,
     ));
