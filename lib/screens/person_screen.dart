@@ -80,9 +80,6 @@ class _PersonScreenState extends State<PersonScreen> {
                   },
                   child: const Text('Save'),
                 ),
-                Image.network(
-                  'https://i.ytimg.com/vi/TwlT0Ph9WKE/hq720.jpg?sqp=-oaymwE7CK4FEIIDSFryq4qpAy0IARUAAAAAGAElAADIQj0AgKJD8AEB-AHUBoAC4AOKAgwIABABGHIgXShGMA8=&rs=AOn4CLCi2d_iZCUpS3SspAweKWkEelnepg',
-                )
               ],
             ),
           ),
