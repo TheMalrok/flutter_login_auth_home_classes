@@ -9,6 +9,10 @@ Future<void> showAddPersonSheet(BuildContext context) {
   TextEditingController descriptionController = TextEditingController();
   String? isTeacher;
 
+  String? nameError;
+  String? surnameError;
+  String? radioError;
+
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -33,6 +37,7 @@ Future<void> showAddPersonSheet(BuildContext context) {
                     controller: nameController,
                     decoration: InputDecoration(
                       hintText: 'Name',
+                      errorText: nameError,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide(
@@ -40,44 +45,74 @@ Future<void> showAddPersonSheet(BuildContext context) {
                         ),
                       ),
                     ),
+                    onChanged: (value) {
+                      if (nameError != null) {
+                        setState(() {
+                          nameError = null;
+                        });
+                      }
+                    },
                   ),
                   SizedBox(height: 12),
                   TextField(
                     controller: surnameController,
                     decoration: InputDecoration(
                       hintText: 'Surname',
+                      errorText: surnameError,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
+                    onChanged: (value) {
+                      if (surnameError != null) {
+                        setState(() {
+                          surnameError = null;
+                        });
+                      }
+                    },
                   ),
                   SizedBox(height: 12),
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: RadioListTile(
-                          title: const Text('Teacher'),
-                          value: 'isTeacher',
-                          groupValue: isTeacher,
-                          onChanged: (String? value) {
-                            setState(() {
-                              isTeacher = value;
-                            });
-                          },
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile(
+                              title: const Text('Teacher'),
+                              value: 'isTeacher',
+                              groupValue: isTeacher,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  isTeacher = value;
+                                  radioError = null;
+                                });
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: RadioListTile(
+                              title: const Text('Student'),
+                              value: 'isStudent',
+                              groupValue: isTeacher,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  isTeacher = value;
+                                  radioError = null;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                      Expanded(
-                        child: RadioListTile(
-                          title: const Text('Student'),
-                          value: 'isStudent',
-                          groupValue: isTeacher,
-                          onChanged: (String? value) {
-                            setState(() {
-                              isTeacher = value;
-                            });
-                          },
+                      if (radioError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Text(
+                            radioError!,
+                            style: TextStyle(color: Colors.red, fontSize: 12),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                   SizedBox(height: 12),
@@ -105,7 +140,31 @@ Future<void> showAddPersonSheet(BuildContext context) {
                   ElevatedButton(
                     child: const Text('Add Person'),
                     onPressed: () {
-                      setState(() {
+                      // Walidacja przed dodaniem osoby
+                      bool isValid = true;
+
+                      if (nameController.text.trim().isEmpty) {
+                        setState(() {
+                          nameError = 'Imię jest wymagane';
+                        });
+                        isValid = false;
+                      }
+
+                      if (surnameController.text.trim().isEmpty) {
+                        setState(() {
+                          surnameError = 'Nazwisko jest wymagane';
+                        });
+                        isValid = false;
+                      }
+
+                      if (isTeacher == null) {
+                        setState(() {
+                          radioError = 'Wybierz rolę (nauczyciel lub uczeń)';
+                        });
+                        isValid = false;
+                      }
+
+                      if (isValid) {
                         _addPerson(
                           name: nameController.text,
                           surname: surnameController.text,
@@ -114,7 +173,7 @@ Future<void> showAddPersonSheet(BuildContext context) {
                           description: descriptionController.text,
                         );
                         Navigator.pop(context);
-                      });
+                      }
                     },
                   ),
                 ],
@@ -136,8 +195,8 @@ void _addPerson(
   personList.add(Person(
     name: name ?? "",
     surname: surname ?? "",
-    isTeacher: isTeacher == isTeacher ? true : false,
-    age: int.tryParse(age ?? ""),
-    description: description,
+    isTeacher: isTeacher == 'isTeacher',
+    age: int.tryParse(age ?? "0") ?? 0,
+    description: description ?? "",
   ));
 }
