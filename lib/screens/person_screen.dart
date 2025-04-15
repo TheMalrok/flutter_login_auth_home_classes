@@ -75,7 +75,34 @@ class _PersonScreenState extends State<PersonScreen> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      widget.person.description = _textEditingController.text;
+                      // Show confirmation dialog
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Potwierdź'),
+                            content: const Text('Czy chcesz zapisać zmiany?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Anuluj'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  widget.person.description =
+                                      _textEditingController.text;
+                                  _textEditingController.clear();
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Potwierdź'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      // Clear the text field
                     });
                   },
                   child: const Text('Save'),
