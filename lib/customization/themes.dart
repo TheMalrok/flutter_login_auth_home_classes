@@ -10,7 +10,7 @@ class AppThemes {
 
     // Color scheme
     colorScheme: ColorScheme.light(
-      primary: const Color.fromARGB(255, 158, 98, 201),
+      primary: const Color.fromARGB(255, 156, 26, 255),
       onPrimary: Colors.white,
       secondary: Colors.teal,
       onSecondary: Colors.white,

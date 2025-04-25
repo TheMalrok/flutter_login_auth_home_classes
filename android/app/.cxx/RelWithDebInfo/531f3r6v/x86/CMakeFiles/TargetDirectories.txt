@@ -1,0 +1,2 @@
+/Users/pawelbaraniak/FlutterProjects/flutter_login_auth_home_classes/android/app/.cxx/RelWithDebInfo/531f3r6v/x86/CMakeFiles/edit_cache.dir
+/Users/pawelbaraniak/FlutterProjects/flutter_login_auth_home_classes/android/app/.cxx/RelWithDebInfo/531f3r6v/x86/CMakeFiles/rebuild_cache.dir

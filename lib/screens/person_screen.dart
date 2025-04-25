@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/classes/person.dart';
+import 'package:flutter_application_1/services/person_service.dart';
 
 class PersonScreen extends StatefulWidget {
   final Person person;
+  final int index;
+  final VoidCallback onUpdate;
+
   const PersonScreen({
     super.key,
     required this.person,
+    required this.index,
+    required this.onUpdate,
   });
 
   @override
@@ -13,9 +19,23 @@ class PersonScreen extends StatefulWidget {
 }
 
 class _PersonScreenState extends State<PersonScreen> {
+  late TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController =
+        TextEditingController(text: widget.person.description);
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _textEditingController = TextEditingController();
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.person.name),
@@ -53,6 +73,14 @@ class _PersonScreenState extends State<PersonScreen> {
                     ),
                   ),
                 ),
+                if (widget.person.age != null)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Wiek: ${widget.person.age}',
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -74,36 +102,40 @@ class _PersonScreenState extends State<PersonScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      // Show confirmation dialog
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Potwierdź'),
-                            content: const Text('Czy chcesz zapisać zmiany?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Anuluj'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  widget.person.description =
-                                      _textEditingController.text;
-                                  _textEditingController.clear();
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Potwierdź'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                      // Clear the text field
-                    });
+                    // Show confirmation dialog
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Potwierdź'),
+                          content: const Text('Czy chcesz zapisać zmiany?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Anuluj'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                widget.person.description =
+                                    _textEditingController.text;
+                                setState(() {});
+                                await PersonService.updatePerson(
+                                    widget.index, widget.person);
+                                widget.onUpdate();
+                                Navigator.of(context).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text('Zmiany zostały zapisane')),
+                                );
+                              },
+                              child: const Text('Potwierdź'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: const Text('Save'),
                 ),

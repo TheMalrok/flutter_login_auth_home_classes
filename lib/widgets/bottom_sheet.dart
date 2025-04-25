@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/classes/person.dart';
-import 'package:flutter_application_1/person_list.dart';
+import 'package:flutter_application_1/services/person_service.dart';
 
 Future<void> showAddPersonSheet(BuildContext context) {
   TextEditingController nameController = TextEditingController();
@@ -139,7 +139,7 @@ Future<void> showAddPersonSheet(BuildContext context) {
                   SizedBox(height: 20),
                   ElevatedButton(
                     child: const Text('Add Person'),
-                    onPressed: () {
+                    onPressed: () async {
                       // Walidacja przed dodaniem osoby
                       bool isValid = true;
 
@@ -165,14 +165,30 @@ Future<void> showAddPersonSheet(BuildContext context) {
                       }
 
                       if (isValid) {
-                        _addPerson(
+                        // Tworzenie nowej osoby
+                        final newPerson = Person(
                           name: nameController.text,
                           surname: surnameController.text,
-                          isTeacher: isTeacher,
-                          age: ageController.text,
-                          description: descriptionController.text,
+                          isTeacher: isTeacher == 'isTeacher',
+                          age: int.tryParse(ageController.text),
+                          description: descriptionController.text.isEmpty
+                              ? null
+                              : descriptionController.text,
                         );
+
+                        // Zapisanie do Hive
+                        await PersonService.addPerson(newPerson);
+
+                        // Zamknięcie bottom sheet
                         Navigator.pop(context);
+
+                        // Komunikat o sukcesie
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Osoba została dodana'),
+                            duration: Duration(milliseconds: 300),
+                          ),
+                        );
                       }
                     },
                   ),
@@ -184,19 +200,4 @@ Future<void> showAddPersonSheet(BuildContext context) {
       );
     },
   );
-}
-
-void _addPerson(
-    {String? name,
-    String? surname,
-    String? isTeacher,
-    String? age,
-    String? description}) {
-  personList.add(Person(
-    name: name ?? "",
-    surname: surname ?? "",
-    isTeacher: isTeacher == 'isTeacher',
-    age: int.tryParse(age ?? "0") ?? 0,
-    description: description ?? "",
-  ));
 }
